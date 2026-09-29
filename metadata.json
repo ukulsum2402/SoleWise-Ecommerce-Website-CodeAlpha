@@ -1,0 +1,6 @@
+{
+  "name": "SoleWise — Smart Footwear Commerce & Product Experience Platform",
+  "description": "SoleWise is a modern footwear commerce platform combining real product intelligence, lifecycle wear analysis, shoe care guides, interactive shoe customization lab, and community design challenges.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

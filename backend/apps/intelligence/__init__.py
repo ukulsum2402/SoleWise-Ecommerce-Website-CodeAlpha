@@ -1,0 +1,1 @@
+# SoleWise Product Intelligence App

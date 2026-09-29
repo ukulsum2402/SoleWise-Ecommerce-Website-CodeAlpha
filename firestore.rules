@@ -1,0 +1,99 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if false;
+      allow create, update: if isOwner(userId) && isValidId(userId);
+      allow delete: if false;
+    }
+
+    // Brands (Catalog - Public Read, Admin Write)
+    match /brands/{brandId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Products (Catalog - Public Read, Admin Write)
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Product Intelligence (Catalog - Public Read, Admin Write)
+    match /intelligence/{productId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Cart items (User-owned)
+    match /cart/{cartItemId} {
+      allow get, list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(cartItemId) && incoming().userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && existing().userId == request.auth.uid;
+    }
+
+    // Wishlist items (User-owned)
+    match /wishlist/{wishlistItemId} {
+      allow get, list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(wishlistItemId) && incoming().userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && existing().userId == request.auth.uid;
+    }
+
+    // Orders (User-owned)
+    match /orders/{orderId} {
+      allow get, list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(orderId) && incoming().userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // Design Challenges (Public read)
+    match /challenges/{challengeId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Design Submissions (Public read, authenticated creation and vote update)
+    match /submissions/{submissionId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(submissionId) && incoming().userId == request.auth.uid;
+      allow update: if isSignedIn() && incoming().diff(existing()).affectedKeys().hasOnly(['voteCount']);
+      allow delete: if isSignedIn() && existing().userId == request.auth.uid;
+    }
+
+    // Design Votes (User vote record)
+    match /votes/{voteId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(voteId) && incoming().userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+  }
+}

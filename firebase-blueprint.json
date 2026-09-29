@@ -1,0 +1,219 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile data for registered SoleWise shoppers and designers.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 255 },
+        "displayName": { "type": "string", "maxLength": 120 },
+        "photoURL": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Brand": {
+      "title": "Brand",
+      "description": "Footwear manufacturer profile and catalog metadata.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 100 },
+        "slug": { "type": "string", "maxLength": 100 },
+        "originCountry": { "type": "string", "maxLength": 80 },
+        "foundedYear": { "type": "number" },
+        "description": { "type": "string", "maxLength": 1000 },
+        "websiteUrl": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "name", "slug"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Footwear item with commercial metadata and intelligence link.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 160 },
+        "slug": { "type": "string", "maxLength": 160 },
+        "brandId": { "type": "string", "maxLength": 64 },
+        "brandName": { "type": "string", "maxLength": 100 },
+        "price": { "type": "number" },
+        "category": { "type": "string", "maxLength": 60 },
+        "gender": { "type": "string", "maxLength": 30 },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "description": { "type": "string", "maxLength": 2000 },
+        "colors": { "type": "array" },
+        "sizes": { "type": "array" },
+        "images": { "type": "array" },
+        "isFeatured": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "brandId", "price"]
+    },
+    "ProductIntelligence": {
+      "title": "ProductIntelligence",
+      "description": "Deep factual product intelligence, usage guidance, lifecycle wear, and care.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "maxLength": 64 },
+        "intendedUse": { "type": "string", "maxLength": 500 },
+        "primaryMaterials": { "type": "string", "maxLength": 500 },
+        "cushioningTechnology": { "type": "string", "maxLength": 300 },
+        "suitableActivities": { "type": "array" },
+        "dailyCasualWearNotes": { "type": "string", "maxLength": 1000 },
+        "officeWearNotes": { "type": "string", "maxLength": 1000 },
+        "walkingTravelWearNotes": { "type": "string", "maxLength": 1000 },
+        "occasionalWearNotes": { "type": "string", "maxLength": 1000 },
+        "cleaningGuide": { "type": "string", "maxLength": 2000 },
+        "dryingGuide": { "type": "string", "maxLength": 1000 },
+        "storageGuide": { "type": "string", "maxLength": 1000 },
+        "thingsToAvoid": { "type": "array" },
+        "wearIndicators": { "type": "array" },
+        "replacementConsiderations": { "type": "string", "maxLength": 1500 },
+        "sourceReferences": { "type": "array" }
+      },
+      "required": ["productId", "intendedUse"]
+    },
+    "CartItem": {
+      "title": "CartItem",
+      "description": "User shopping bag item record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "productId": { "type": "string", "maxLength": 64 },
+        "productName": { "type": "string", "maxLength": 160 },
+        "brandName": { "type": "string", "maxLength": 100 },
+        "size": { "type": "string", "maxLength": 20 },
+        "color": { "type": "string", "maxLength": 50 },
+        "price": { "type": "number" },
+        "quantity": { "type": "number" },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "addedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "productId", "quantity", "price"]
+    },
+    "WishlistItem": {
+      "title": "WishlistItem",
+      "description": "User saved favorite shoe item.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "productId": { "type": "string", "maxLength": 64 },
+        "addedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "productId"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase order.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "status": { "type": "string", "maxLength": 40 },
+        "shippingAddress": { "type": "string", "maxLength": 500 },
+        "recipientName": { "type": "string", "maxLength": 120 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "items", "totalAmount", "status"]
+    },
+    "DesignChallenge": {
+      "title": "DesignChallenge",
+      "description": "Weekly community shoe design challenge contest.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "weekNumber": { "type": "number" },
+        "title": { "type": "string", "maxLength": 120 },
+        "theme": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "prompt": { "type": "string", "maxLength": 500 },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "submissionCount": { "type": "number" }
+      },
+      "required": ["id", "weekNumber", "title", "isActive"]
+    },
+    "DesignSubmission": {
+      "title": "DesignSubmission",
+      "description": "Custom shoe artwork submitted by a community member.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "challengeId": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "creatorName": { "type": "string", "maxLength": 120 },
+        "shoeModel": { "type": "string", "maxLength": 100 },
+        "brandName": { "type": "string", "maxLength": 100 },
+        "title": { "type": "string", "maxLength": 120 },
+        "colors": { "type": "object" },
+        "voteCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "challengeId", "userId", "shoeModel", "title"]
+    },
+    "DesignVote": {
+      "title": "DesignVote",
+      "description": "Community vote registered for a design submission.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "submissionId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "submissionId", "userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Public user profiles"
+    },
+    "/brands/{brandId}": {
+      "schema": "Brand",
+      "description": "Footwear brands collection"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Footwear products collection"
+    },
+    "/intelligence/{productId}": {
+      "schema": "ProductIntelligence",
+      "description": "Product intelligence and lifecycle guidance"
+    },
+    "/cart/{cartItemId}": {
+      "schema": "CartItem",
+      "description": "User shopping carts"
+    },
+    "/wishlist/{wishlistItemId}": {
+      "schema": "WishlistItem",
+      "description": "User wishlist favorites"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer completed orders"
+    },
+    "/challenges/{challengeId}": {
+      "schema": "DesignChallenge",
+      "description": "Weekly shoe design challenges"
+    },
+    "/submissions/{submissionId}": {
+      "schema": "DesignSubmission",
+      "description": "Community shoe customization submissions"
+    },
+    "/votes/{voteId}": {
+      "schema": "DesignVote",
+      "description": "Upvotes on community submissions"
+    }
+  }
+}
